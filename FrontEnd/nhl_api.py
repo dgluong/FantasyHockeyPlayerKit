@@ -1,3 +1,4 @@
+from csv import DictWriter
 import requests
 import json
 
@@ -50,7 +51,6 @@ class NhlScrape:
             if data.ok:
                 temp = {i: data.json()["roster"]}
                 rosters.update(temp)
-        print(rosters)
 
         # TODO modularize code here, should be own function
         for team in rosters:
@@ -62,11 +62,10 @@ class NhlScrape:
                     stats = self.get_stats(player_endpoint)
                     player_score = self.calculate_player_score(stats)
                     temp = {"name": name, "position": position}
-                    temp.update(stats)
                     temp.update({"player_score": player_score})
+                    temp.update(stats)
                     self.players.append(temp)
-                    print(temp)
-        print(self.players)
+        self.write_excel()
 
     def get_stats(self, player_endpoint: str):
         endpoint = "/stats?stats=statsSingleSeason&season=20192020"
@@ -97,28 +96,40 @@ class NhlScrape:
         player_score = stat * multiplier
         return player_score
 
+    def write_excel(self):
+        keys = [key for key in self.players[0].keys()]
+        print(keys)
+
+        with open(f'{self.output_file}.csv', 'w') as outfile:
+            writer = DictWriter(outfile, restval="-", fieldnames=keys)
+            writer.writeheader()
+            writer.writerows(self.players)
+
 
 if __name__ == '__main__':
-    settings = {'games': '1',
-                'assists': '1',
-                'goals': '1',
-                'pim': '.5',
-                'shots': '.3',
-                'hits': '.2',
-                'powerPlayGoals': '0',
-                'powerPlayPoints': '1',
-                'gameWinningGoals': '0',
-                'overTimeGoals': '0',
-                'shortHandedGoals': '0',
-                'blocked': '.5',
-                'plusMinus': '1',
-                'points': '1',
-                'shifts': '0',
-                'games_played': '40',
-                'output': 'test',
-                'per_game': True
-                }
+    """Test input"""
+    settings = {
+        'games': '1',
+        'assists': '1',
+        'goals': '1',
+        'pim': '.5',
+        'shots': '.3',
+        'hits': '.2',
+        'powerPlayGoals': '0',
+        'powerPlayPoints': '1',
+        'gameWinningGoals': '0',
+        'overTimeGoals': '0',
+        'shortHandedGoals': '0',
+        'blocked': '.5',
+        'plusMinus': '1',
+        'points': '1',
+        'shifts': '0',
+        'games_played': '40',
+        'output': 'test',
+        'per_game': True
+    }
 
     test = NhlScrape()
     test.set_scraper(**settings)
     test.get_rosters()
+    test.write_excel()
