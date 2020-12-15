@@ -21,7 +21,7 @@ import json
 # shifts
 
 class NhlScrape:
-    def __init__(self, **kwargs):
+    def __init__(self):
         self.url = 'https://statsapi.web.nhl.com/'
         self.players = []
         self.multipliers = None
@@ -109,23 +109,23 @@ class NhlScrape:
 if __name__ == '__main__':
     """Test input"""
     settings = {
-        'games': '1',
-        'assists': '1',
-        'goals': '1',
-        'pim': '.5',
-        'shots': '.3',
-        'hits': '.2',
+        'games': '0',
+        'assists': '3.378485',
+        'goals': '5.61733',
+        'pim': '0',
+        'shots': '.546854',
+        'hits': '.824965',
         'powerPlayGoals': '0',
-        'powerPlayPoints': '1',
+        'powerPlayPoints': '9.474552175',
         'gameWinningGoals': '0',
         'overTimeGoals': '0',
         'shortHandedGoals': '0',
-        'blocked': '.5',
-        'plusMinus': '1',
-        'points': '1',
+        'blocked': '0',
+        'plusMinus': '0',
+        'points': '2.109654954',
         'shifts': '0',
-        'games_played': '40',
-        'output': 'test',
+        'games_played': '15',
+        'output': 'per_game_averages',
         'per_game': True
     }
 

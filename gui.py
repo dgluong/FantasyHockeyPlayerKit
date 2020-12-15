@@ -47,18 +47,27 @@ window = sg.Window("Fantasy Hockey Player Tool", layout)
 
 scraper = NhlScrape()
 
-while True:
-    event, values = window.read()
-    try:
-        scraper.set_scraper(**values)
-        scraper.get_rosters()
-    except TypeError as e:
-        print(e)
-    except ValueError as e:
-        print("user value error")
-    print(values)
-    print(event)
-    if event == sg.WIN_CLOSED:
-        break
+event, values = window.read()
+try:
+    scraper.set_scraper(**values)
+    scraper.get_rosters()
+except TypeError as e:
+    print(e)
+except ValueError as e:
+    print("user value error")
 
-window.close()
+# while True:
+#     event, values = window.read()
+#     try:
+#         scraper.set_scraper(**values)
+#         scraper.get_rosters()
+#     except TypeError as e:
+#         print(e)
+#     except ValueError as e:
+#         print("user value error")
+#     print(values)
+#     print(event)
+#     if event == sg.WIN_CLOSED:
+#         break
+
+# window.close()
